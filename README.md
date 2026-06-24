@@ -33,18 +33,75 @@ Screenshots
 <img width="1865" height="492" alt="image" src="https://github.com/user-attachments/assets/03adcb73-4d11-4c94-bfc6-3d0f530407e3" />
 
 
-Installation
-git clone https://github.com/yourusername/game-balance-simulator.git
+## 🚀 Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/game-balance-simulator.git
+
 cd game-balance-simulator
+```
 
+### Create a Virtual Environment
+
+#### Windows
+
+```bash
 python -m venv venv
-venv\Scripts\activate
 
+venv\Scripts\activate
+```
+
+#### macOS / Linux
+
+```bash
+python -m venv venv
+
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
+
+### Run the Application
+
+```bash
 python app.py
-Key Learning Outcomes
-Monte Carlo simulation
-Vectorized computing with NumPy
-Data visualization with Plotly
-Real-time dashboard development
-Game balance analysis
+```
+
+Open:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+## 📊 What I Learned
+
+- Monte Carlo simulation techniques
+- High-performance vectorized computing with NumPy
+- Interactive data visualization using Plotly
+- Building real-time analytical dashboards
+- Practical game balance analysis and design
+
+---
+
+## 🔮 Future Improvements
+
+- Equipment and item systems
+- Status effects and abilities
+- AI-controlled combat strategies
+- Build export/import functionality
+- Matchup matrix analysis
+- Combat replay visualization
+
+---
+
+## 📄 License
+
+MIT License
