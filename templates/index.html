@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Balance Simulator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>⚔ Game Balance Simulator</h1>
+      <p class="subtitle">
+        10,000 fights per matchup · watch the probability curves shift in real
+        time
+      </p>
+    </header>
+
+    <main>
+      <section class="controls">
+        <!-- Player A -->
+        <div class="player-panel" data-player="a">
+          <div class="panel-header player-a">
+            <h2>Player A</h2>
+            <select id="preset-a" class="preset-select">
+              <option value="">Custom</option>
+              {% for name in builds %}
+              <option value="{{ name }}">{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="sliders" id="sliders-a"></div>
+          <div class="stat-bars" id="statbars-a"></div>
+        </div>
+
+        <!-- Center: iterations + run button -->
+        <div class="center-panel">
+          <label class="iterations-label">
+            Fights per simulation
+            <input
+              type="range"
+              id="iterations"
+              min="500"
+              max="30000"
+              step="500"
+              value="10000"
+            />
+            <span id="iterations-val">10,000</span>
+          </label>
+          <button id="run-btn">Run Simulation</button>
+          <div id="status" class="status">Ready</div>
+
+          <div class="sensitivity">
+            <h3>Sensitivity Sweep (Player A)</h3>
+            <p class="hint">
+              How does A's win rate change as one stat moves across its range?
+            </p>
+            <select id="sens-stat">
+              <option value="hp">HP</option>
+              <option value="attack">Attack</option>
+              <option value="defense">Defense</option>
+              <option value="crit_rate">Crit Rate</option>
+              <option value="crit_damage">Crit Damage</option>
+              <option value="speed">Speed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Player B -->
+        <div class="player-panel" data-player="b">
+          <div class="panel-header player-b">
+            <h2>Player B</h2>
+            <select id="preset-b" class="preset-select">
+              <option value="">Custom</option>
+              {% for name in builds %}
+              <option value="{{ name }}">{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="sliders" id="sliders-b"></div>
+          <div class="stat-bars" id="statbars-b"></div>
+        </div>
+      </section>
+
+      <section class="stats-summary">
+        <div class="stat-card">
+          <span class="label">A Win Rate</span
+          ><span id="sum-a-win" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">B Win Rate</span
+          ><span id="sum-b-win" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg Rounds</span
+          ><span id="sum-rounds" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg Dmg (A)</span
+          ><span id="sum-dmg-a" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg Dmg (B)</span
+          ><span id="sum-dmg-b" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg Crits (A)</span
+          ><span id="sum-crit-a" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg Crits (B)</span
+          ><span id="sum-crit-b" class="value">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="label">Avg HP Left (Winner)</span
+          ><span id="sum-hp-left" class="value">—</span>
+        </div>
+      </section>
+
+      <section class="charts">
+        <div class="chart-card">
+          <h3>Win Rate</h3>
+          <div id="chart-winrate"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Win-Rate Convergence (Cumulative)</h3>
+          <div id="chart-convergence"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Rounds to Win — by Winner</h3>
+          <div id="chart-rounds"></div>
+        </div>
+        <div class="chart-card">
+          <h3>Total Damage Distribution</h3>
+          <div id="chart-damage"></div>
+        </div>
+        <div class="chart-card full">
+          <h3>Sensitivity Sweep — A Win Rate vs. Stat</h3>
+          <div id="chart-sensitivity"></div>
+        </div>
+      </section>
+    </main>
+
+    <script id="preset-builds" type="application/json">
+      {{ builds | default([]) | tojson | safe }}
+    </script>
+    <script>
+      const PRESET_BUILDS = JSON.parse(
+        document.getElementById("preset-builds").textContent || "[]",
+      );
+    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
